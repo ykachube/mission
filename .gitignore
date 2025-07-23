@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+/dist/
+
+# Logs
+logs
+*.log
+
+# Environment files
+.env*
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+build/
+coverage/
+
+# Temporary files
+tmp/
+temp/
+
+# Frontend build
+src/frontend/build/
+src/frontend/node_modules/

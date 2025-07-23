@@ -1,0 +1,21 @@
+/* src/frontend/index.css */
+body {
+    margin: 0;
+    font-family: 'Courier New', monospace;
+    background-color: black;
+    color: limegreen;
+  }
+  
+  .glow {
+    text-shadow: 0 0 5px limegreen, 0 0 10px limegreen;
+  }
+  
+  .static {
+    animation: static 0.1s infinite;
+  }
+  
+  @keyframes static {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+  }

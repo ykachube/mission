@@ -1,0 +1,52 @@
+{
+  "name": "mission-control-dashboard",
+  "version": "1.0.0",
+  "description": "A retro-styled, real-time network monitoring dashboard with interactive visualizations",
+  "main": "dist/backend/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/backend/index.js",
+    "dev": "nodemon src/backend/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "network-monitoring",
+    "dashboard",
+    "tcp",
+    "udp",
+    "retro",
+    "terminal",
+    "real-time",
+    "react",
+    "typescript",
+    "konva"
+  ],
+  "author": "Mission Control Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/mission-control.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/mission-control/issues"
+  },
+  "homepage": "https://github.com/your-username/mission-control#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "konva": "^9.3.18",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-konva": "^19.0.3",
+    "sqlite3": "^5.1.7",
+    "styled-components": "^6.1.15",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.13.8",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "nodemon": "^3.1.9"
+  }
+}

@@ -1,6 +1,7 @@
 // src/frontend/components/Canvas.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Stage, Layer, Rect, Text, Circle, Group } from 'react-konva';
+import { useTheme } from '../contexts/ThemeContext';
 
 interface HostStatus {
   id: string;
@@ -17,6 +18,7 @@ const Canvas: React.FC = () => {
   const [hosts, setHosts] = useState<HostStatus[]>([]);
   const animationRef = useRef<number | null>(null);
   const [animationTime, setAnimationTime] = useState(0);
+  const { theme } = useTheme();
 
   // Animation loop for smooth effects
   useEffect(() => {
@@ -73,8 +75,10 @@ const Canvas: React.FC = () => {
     // Calculate glow intensity with smoother transition
     const glowIntensity = Math.max(0.1, Math.pow(1 - fade, 2));
     
-    // Define colors based on status
-    const glowColor = status === 'up' ? '#00ff00' : '#ff0000';
+    // Define colors based on status and current theme
+    const glowColor = status === 'up' 
+      ? (theme.name === 'green' ? '#00ff00' : '#ffbf00') 
+      : (theme.name === 'green' ? '#ff0000' : '#ffbf00');
     const shadowColor = glowColor;
     
     // Calculate the colors based on status and fade
@@ -87,15 +91,25 @@ const Canvas: React.FC = () => {
       shadowBlur = 25 + 20 * flashIntensity;
       shadowOpacity = 0.9 * flashIntensity;
     } else if (status === 'up') {
-      // Green for up hosts, fading to dark green
+      // For UP status, use theme-aware colors
       const greenValue = Math.floor(50 + 205 * (1 - fade));
-      fillColor = `rgba(0, ${greenValue}, 0, 1)`;
+      const yellowValue = Math.floor(191 + 64 * (1 - fade));
+      
+      fillColor = theme.name === 'green' 
+        ? `rgba(0, ${greenValue}, 0, 1)` 
+        : `rgba(${yellowValue}, ${yellowValue}, 0, 1)`;
+        
       shadowBlur = 20 * glowIntensity + 15 * pulseEffect;
       shadowOpacity = 0.8 * glowIntensity + 0.5 * pulseEffect;
     } else {
-      // Red for down hosts, fading to dark red
+      // For DOWN status, use theme-aware colors
       const redValue = Math.floor(50 + 205 * (1 - fade));
-      fillColor = `rgba(${redValue}, 0, 0, 1)`;
+      const yellowValue = Math.floor(191 + 64 * (1 - fade));
+      
+      fillColor = theme.name === 'green' 
+        ? `rgba(${redValue}, 0, 0, 1)` 
+        : `rgba(${yellowValue}, ${yellowValue}, 0, 1)`;
+        
       shadowBlur = 20 * glowIntensity + 15 * pulseEffect;
       shadowOpacity = 0.8 * glowIntensity + 0.5 * pulseEffect;
     }
@@ -154,26 +168,38 @@ const Canvas: React.FC = () => {
   return (
     <Stage width={window.innerWidth} height={window.innerHeight}>
       <Layer>
-        {/* Vintage terminal background effects */}
+        {/* Background that respects current theme */}
         <Rect
           x={0}
           y={0}
           width={window.innerWidth}
           height={window.innerHeight}
-          fill="black"
+          fill={theme.name === 'green' ? "#000" : "#111"}
         />
         
-        {/* Simplified scanlines effect for better performance */}
-        {Array.from({ length: Math.ceil(window.innerHeight / 6) }).map((_, i) => (
+        {/* Scanlines effect that respects theme */}
+        {theme.effects.staticNoise && Array.from({ length: Math.ceil(window.innerHeight / 6) }).map((_, i) => (
           <Rect
             key={i}
             x={0}
             y={i * 6}
             width={window.innerWidth}
             height={1}
-            fill="rgba(0, 255, 0, 0.05)"
+            fill={theme.name === 'green' ? "rgba(0, 255, 0, 0.05)" : "rgba(255, 191, 0, 0.03)"}
           />
         ))}
+        
+        {/* Animated scanline that respects theme */}
+        {theme.effects.scanlines && (
+          <Rect
+            x={0}
+            y={Math.sin(animationTime / 1000) * 50}
+            width={window.innerWidth}
+            height={2}
+            fill={theme.name === 'green' ? "rgba(0, 255, 0, 0.4)" : "rgba(255, 191, 0, 0.3)"}
+            opacity={0.3 + Math.abs(Math.sin(animationTime / 500)) * 0.2}
+          />
+        )}
         
         {/* Individual hosts with LED indicators */}
         {hosts.map((host, index) => (
@@ -190,7 +216,7 @@ const Canvas: React.FC = () => {
             <Rect
               width={320}
               height={40}
-              stroke="#00ff00"
+              stroke={theme.name === 'green' ? "#00ff00" : "#ffbf00"}
               strokeWidth={1}
             />
             <Group x={20} y={20}>
@@ -200,14 +226,16 @@ const Canvas: React.FC = () => {
               x={40}
               y={13}
               text={`${host.host}:${host.port} (${host.protocol.toUpperCase()})`}
-              fill="#00ff00"
+              fill={theme.name === 'green' ? "#00ff00" : "#ffbf00"}
               fontSize={14}
             />
             <Text
               x={230}
               y={13}
               text={host.status === 'up' ? 'UP' : `DOWN (${host.consecutiveFailures}/${host.failureThreshold})`}
-              fill={host.status === 'up' ? '#00ff00' : '#ff0000'}
+              fill={host.status === 'up' 
+                ? (theme.name === 'green' ? '#00ff00' : '#ffbf00') 
+                : (theme.name === 'green' ? '#ff0000' : '#ffff00')}
               fontSize={14}
               fontStyle="bold"
             />

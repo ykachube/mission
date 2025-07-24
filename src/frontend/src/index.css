@@ -1,21 +1,91 @@
 /* src/frontend/index.css */
+:root {
+  /* Green theme variables */
+  --background-color: #000;
+  --text-color: limegreen;
+  --glow-color: limegreen;
+  --scanline-color: rgba(0, 255, 0, 0.4);
+  --static-noise-color: rgba(0, 255, 0, 0.05);
+}
+
+/* Amber theme variables */
+:root.theme-amber {
+  --background-color: #111;
+  --text-color: #ffbf00;
+  --glow-color: #ffbf00;
+  --scanline-color: rgba(255, 191, 0, 0.3);
+  --static-noise-color: rgba(255, 191, 0, 0.03);
+}
+
+/* Base styles */
 body {
-    margin: 0;
-    font-family: 'Courier New', monospace;
-    background-color: black;
-    color: limegreen;
-  }
-  
-  .glow {
-    text-shadow: 0 0 5px limegreen, 0 0 10px limegreen;
-  }
-  
-  .static {
-    animation: static 0.1s infinite;
-  }
-  
-  @keyframes static {
-    0% { opacity: 1; }
-    50% { opacity: 0.8; }
-    100% { opacity: 1; }
-  }
+  margin: 0;
+  font-family: 'Courier New', monospace;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.glow {
+  text-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color);
+}
+
+.static {
+  animation: static 0.1s infinite;
+}
+
+@keyframes static {
+  0% { opacity: 1; }
+  50% { opacity: 0.8; }
+  100% { opacity: 1; }
+}
+
+/* Theme toggle button styles */
+.theme-toggle {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid var(--glow-color);
+  border-radius: 3px;
+  transition: all 0.2s ease-in-out;
+  margin: 0 5px;
+}
+
+.theme-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  border-top: 1px solid var(--glow-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+  z-index: 100;
+  font-family: 'Courier New', monospace;
+}
+
+.status-text {
+  color: var(--text-color);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.toggle-label {
+  color: var(--text-color);
+  font-size: 12px;
+}
